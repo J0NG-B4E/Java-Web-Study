@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+
 /*
 * ExtendWith는 JUnit5 버전에서 'spring-test'를 이용하기 위한설정(JUnit4 버전에서는 @Runwith)
 * ContextConfiguration은 스프링의 설정 정보를 로딩하기 위해서 사용.
@@ -22,9 +25,21 @@ public class SampleTests {
     @Autowired
     private SampleService sampleService;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Test
     public void testService1(){
         log.info(sampleService);
         Assertions.assertNotNull(sampleService);
+    }
+
+    @Test
+    public void testConnection() throws Exception {
+        Connection connection = dataSource.getConnection();
+        log.info(connection);
+        Assertions.assertNotNull(connection);
+
+        connection.close();
     }
 }

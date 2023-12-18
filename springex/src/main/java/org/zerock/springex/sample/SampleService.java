@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @Service
 @ToString
@@ -13,5 +14,6 @@ public class SampleService {
     @Autowired
     private SampleDAO sampleDAO;
     */
+    @Qualifier("normal")
     private final SampleDAO sampleDAO;
 }
