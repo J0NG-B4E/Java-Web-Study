@@ -1,12 +1,11 @@
 <%--
   Created by IntelliJ IDEA.
   User: B3LL
-  Date: 2023-12-19
-  Time: 오후 11:36
+  Date: 2023-12-20
+  Time: 오후 11:46
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
@@ -59,33 +58,61 @@
                     Featured
                 </div>
                 <div class="card-body">
-                    <form action="/todo/register" method="post">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Title</span>
-                            <input type="text" name="title" class="form-control" placeholder="Title">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">DueDate</span>
-                            <input type="date" name="dueDate" class="form-control" placeholder="DueDate">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Writer</span>
-                            <input type="text" name="writer" class="form-control" placeholder="Writer">
-                        </div>
-                        <div class="my-4">
-                            <div class="float-end">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="result" class="btn btn-secondary">Reset</button>
-                            </div>
-                        </div>
-                    </form>
-                    <script>
-                        const serverValidResult = {}
-                        <c:forEach items="${errors}" var="error">
-                        serverValidResult['${error.getField()}'] = '${error.defaultMessage}'
+                    <h5 class="card-title">Special title treatment</h5>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Tno</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Writer</th>
+                            <th scope="col">DueDate</th>
+                            <th scope="col">Finished</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${responseDTO.dtoList}" var="dto">
+                        <tr>
+                            <th scope="row"><c:out value="${dto.tno}"/></th>
+                            <td><a href="/todo/read?tno=${dto.tno}" class="text-decoration-none"><c:out value="${dto.title}"/></a></td>
+                            <td><c:out value="${dto.writer}"/></td>
+                            <td><c:out value="${dto.dueDate}"/></td>
+                            <td><c:out value="${dto.finished}"/></td>
+                        </tr>
                         </c:forEach>
+                        </tbody>
+                    </table>
+                    <div class="float-end">
+                        <ul class="pagination flex-wrap">
+                            <c:if test="${responseDTO.prev}">
+                                <li class="page-item">
+                                    <a class="page-link" data-num="${responseDTO.start - 1}">Previous</a>
+                                </li>
+                            </c:if>
+                            <c:forEach begin="${responseDTO.start}" end="${responseDTO.end}" var="num">
+                                <li class="page-item ${responseDTO.page == num ? "active" : ""}">
+                                    <a class="page-link" data-num="${num}">${num}</a>
+                                </li>
+                            </c:forEach>
+                            <c:if test="${responseDTO.next}">
+                                <li class="page-item">
+                                    <a class="page-link" data-num="${responseDTO.end + 1}">Next</a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </div>
+                    <script>
+                        document.querySelector(".pagination").addEventListener("click", function(e){
+                            e.preventDefault()
+                            e.stopPropagation()
 
-                        console.log(serverValidResult)
+                            const target = e.target
+
+                            if(target.tagName !== 'A'){
+                                return
+                            }
+                            const num = target.getAttribute("data-num")
+                            self.location = `/todo/list?page=\${num}`
+                        }, false)
                     </script>
                 </div>
             </div>
