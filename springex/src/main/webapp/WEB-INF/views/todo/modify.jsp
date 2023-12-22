@@ -105,7 +105,7 @@
                         document.querySelector(".btn-danger").addEventListener("click", function(e){
                             e.preventDefault()
                             e.stopPropagation()
-                            formObj.action = "/todo/remove"
+                            formObj.action = "/todo/remove?${pageRequestDTO.link}"
                             formObj.method = "post"
                             formObj.submit()
                         }, false)
@@ -122,7 +122,7 @@
                             e.preventDefault()
                             e.stopPropagation()
 
-                            self.location = "/todo/list";
+                            self.location = `/todo/list?${pageRequestDTO.link}`;
                         }, false)
                     </script>
                 </div>
