@@ -23,7 +23,7 @@ public class TodoController {
     private final TodoService todoService;
     /*
     * TodoController의 @RequestMapping의 value값은 "/to\do"이고
-    * list()는 /list 이므로 최종 경로는 /to\do/list가 된다.*/
+    * list()는 /list 이므로 최종 경로는 /todo/list가 된다.*/
     @GetMapping("/list")
     public void list(@Valid PageRequestDTO pageRequestDTO, BindingResult bindingResult, Model model){
         log.info(pageRequestDTO);
